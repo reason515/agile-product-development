@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>敏捷产品研发理念和方法</title>
+  <style>
+    :root {
+      --paper: #fff8ec;
+      --paper-2: #fffdf7;
+      --ink: #22313f;
+      --muted: #5b6b75;
+      --teal: #2fb8ac;
+      --coral: #f26d5b;
+      --gold: #ffd166;
+      --blue: #8ecae6;
+      --green: #7ccf6b;
+      --line: rgba(34, 49, 63, .18);
+      --shadow: 0 20px 55px rgba(34, 49, 63, .12);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 4%, rgba(255, 209, 102, .20), transparent 28rem),
+        radial-gradient(circle at 90% 12%, rgba(47, 184, 172, .14), transparent 30rem),
+        linear-gradient(180deg, #fff7e9 0%, var(--paper) 42%, #fffaf0 100%);
+      font-family: "Microsoft YaHei", "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
+      line-height: 1.78;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(34, 49, 63, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 49, 63, .03) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.65), transparent 65%);
+    }
+
+    a { color: inherit; }
+
+    .page {
+      width: min(1160px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 34px 0 80px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 54px 56px 42px;
+      border: 4px solid var(--ink);
+      border-radius: 34px;
+      background: var(--paper-2);
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      bottom: -110px;
+      width: 320px;
+      height: 320px;
+      border: 22px solid rgba(47, 184, 172, .22);
+      border-radius: 50%;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding: 8px 14px;
+      border: 3px solid var(--ink);
+      border-radius: 999px;
+      background: var(--gold);
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--coral);
+      border: 2px solid var(--ink);
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      max-width: 900px;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .hero blockquote {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0;
+      padding: 20px 24px;
+      border-left: 8px solid var(--teal);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      background: rgba(47, 184, 172, .10);
+      font-size: 1.13rem;
+      font-weight: 650;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+      margin-top: 28px;
+    }
+
+    .toc {
+      position: sticky;
+      top: 18px;
+      padding: 18px;
+      border: 3px solid var(--ink);
+      border-radius: var(--radius);
+      background: rgba(255, 253, 247, .94);
+      box-shadow: 0 12px 28px rgba(34, 49, 63, .08);
+    }
+
+    .toc-title {
+      margin: 0 0 12px;
+      font-size: .96rem;
+      font-weight: 900;
+    }
+
+    .toc nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .92rem;
+      font-weight: 700;
+    }
+
+    .toc a:hover {
+      color: var(--ink);
+      background: rgba(255, 209, 102, .35);
+    }
+
+    main.article {
+      min-width: 0;
+      padding: 42px clamp(22px, 5vw, 64px);
+      border: 4px solid var(--ink);
+      border-radius: 34px;
+      background: rgba(255, 253, 247, .96);
+      box-shadow: var(--shadow);
+    }
+
+    .article > h1:first-child,
+    .article > blockquote:first-of-type {
+      display: none;
+    }
+
+    h2, h3 {
+      position: relative;
+      line-height: 1.28;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 58px 0 20px;
+      padding-top: 16px;
+      font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+    }
+
+    h2::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 86px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--coral), var(--gold), var(--teal));
+    }
+
+    h3 {
+      margin: 34px 0 14px;
+      font-size: 1.28rem;
+    }
+
+    .anchor {
+      position: absolute;
+      left: -1.2em;
+      opacity: 0;
+      color: var(--teal);
+      text-decoration: none;
+      transition: opacity .18s ease;
+    }
+
+    h2:hover .anchor,
+    h3:hover .anchor { opacity: 1; }
+
+    p { margin: 14px 0; }
+
+    strong {
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .signal {
+      display: inline-block;
+      margin: .12em 0;
+      padding: .18em .7em .22em .82em;
+      border-left: 6px solid var(--gold);
+      border-radius: 0 14px 14px 0;
+      background: rgba(255, 209, 102, .16);
+      box-shadow: inset 0 0 0 1px rgba(255, 209, 102, .24);
+    }
+
+    blockquote .signal {
+      border-left-color: var(--blue);
+      background: rgba(142, 202, 230, .18);
+      box-shadow: inset 0 0 0 1px rgba(142, 202, 230, .26);
+    }
+
+    blockquote {
+      margin: 22px 0;
+      padding: 18px 22px;
+      border-left: 7px solid var(--coral);
+      border-radius: 0 18px 18px 0;
+      background: rgba(242, 109, 91, .09);
+      font-weight: 700;
+    }
+
+    ul, ol {
+      padding-left: 1.35em;
+    }
+
+    li { margin: 8px 0; }
+
+    li::marker {
+      color: var(--teal);
+      font-weight: 900;
+    }
+
+    hr {
+      margin: 46px 0;
+      border: 0;
+      height: 3px;
+      border-radius: 999px;
+      background: repeating-linear-gradient(90deg, rgba(34,49,63,.25) 0 18px, transparent 18px 30px);
+    }
+
+    .illustration {
+      margin: 30px 0 34px;
+      padding: 12px;
+      border: 4px solid var(--ink);
+      border-radius: 28px;
+      background: #fffaf0;
+      box-shadow: 0 18px 36px rgba(34, 49, 63, .10);
+    }
+
+    .illustration img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+    }
+
+    .illustration figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      text-align: center;
+      font-size: .92rem;
+      font-weight: 800;
+    }
+
+    code {
+      padding: .15em .35em;
+      border: 1px solid rgba(34, 49, 63, .15);
+      border-radius: 8px;
+      background: rgba(142, 202, 230, .20);
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: .94em;
+    }
+
+    .footer-note {
+      margin-top: 42px;
+      padding: 18px 22px;
+      border-radius: 20px;
+      background: rgba(47, 184, 172, .12);
+      color: var(--muted);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .page { width: min(100% - 24px, 760px); padding-top: 18px; }
+      .hero { padding: 34px 24px 30px; border-radius: 26px; }
+      .layout { display: block; }
+      .toc { position: static; margin-bottom: 22px; }
+      .toc nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      main.article { padding: 28px 18px; border-radius: 26px; }
+      .anchor { display: none; }
+    }
+
+    @media (max-width: 560px) {
+      h1 { font-size: 2.35rem; }
+      .toc nav { grid-template-columns: 1fr; }
+      .hero blockquote { font-size: 1rem; }
+      .article { font-size: .98rem; }
+    }
+
+    @media print {
+      body { background: white; }
+      body::before, .toc, .anchor { display: none; }
+      .page { width: 100%; padding: 0; }
+      .hero, main.article, .illustration { box-shadow: none; }
+      .layout { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="eyebrow">Agile Product Development</div>
+      <h1>敏捷产品研发理念和方法</h1>
+      <blockquote>敏捷不是把会议名字换成英文，也不是给团队套一层“高级流程”。它真正想解决的是：需求总在变、用户不一定买账、团队资源又有限的情况下，我们怎么少走弯路，更快做出真正能落地的产品。</blockquote>
+    </header>
+    <div class="layout">
+      <aside class="toc" aria-label="文章目录">
+        <p class="toc-title">目录</p>
+        <nav>
+          <a href="#一很多团队不是不努力而是努力的方式有问题">很多团队不是不努力，而是努力的方式有问题</a>
+<a href="#二敏捷到底想干什么">敏捷到底想干什么</a>
+<a href="#三敏捷宣言本质上是在说怎么取舍">敏捷宣言：本质上是在说“怎么取舍”</a>
+<a href="#四产品管理才是敏捷的起点">产品管理才是敏捷的起点</a>
+<a href="#五从功能思维切到场景思维">从功能思维切到场景思维</a>
+<a href="#六mvp不是做一个残缺版而是先验证最关键的事">MVP：不是做一个“残缺版”，而是先验证最关键的事</a>
+<a href="#七微信的例子好产品往往是慢慢长出来的">微信的例子：好产品往往是慢慢长出来的</a>
+<a href="#八scrum把敏捷落到团队日常的一套框架">Scrum：把敏捷落到团队日常的一套框架</a>
+<a href="#九scrum-团队可以想象成一支龙舟队">Scrum 团队：可以想象成一支龙舟队</a>
+<a href="#十scrum-怎么跑起来从需求池到产品增量">Scrum 怎么跑起来：从需求池到产品增量</a>
+<a href="#十一用户故事把需求拉回用户语言">用户故事：把需求拉回用户语言</a>
+<a href="#十二完成的定义-dod别让做完了变成扯皮">完成的定义 DoD：别让“做完了”变成扯皮</a>
+<a href="#十三回顾会议-retrospective别让同一个坑反复踩">回顾会议 Retrospective：别让同一个坑反复踩</a>
+<a href="#十四把产品管理和-scrum-串起来看">把产品管理和 Scrum 串起来看</a>
+<a href="#十五给-po-的一些建议">给 PO 的一些建议</a>
+<a href="#十六给-scrum-master-的一些建议">给 Scrum Master 的一些建议</a>
+<a href="#十七我最认同的敏捷价值观">我最认同的敏捷价值观</a>
+<a href="#十八最后总结">最后总结</a>
+        </nav>
+      </aside>
+      <main class="article">
+<h1 id="敏捷产品研发理念和方法"><a class="anchor" href="#敏捷产品研发理念和方法" aria-label="跳转到本节">#</a>敏捷产品研发理念和方法</h1>
+<blockquote>
+<p>敏捷不是把会议名字换成英文，也不是给团队套一层“高级流程”。它真正想解决的是：需求总在变、用户不一定买账、团队资源又有限的情况下，我们怎么少走弯路，更快做出真正能落地的产品。</p>
+</blockquote>
+<hr>
+<h2 id="一很多团队不是不努力而是努力的方式有问题"><a class="anchor" href="#一很多团队不是不努力而是努力的方式有问题" aria-label="跳转到本节">#</a>一、很多团队不是不努力，而是努力的方式有问题</h2>
+<p>做产品研发的人，大概率都见过这些场面：</p>
+<ul>
+<li>实验室里跑得好好的，一到客户现场就各种掉链子</li>
+<li>产品憋了几个月，终于上线了，结果用户不怎么用</li>
+<li>计划排得很漂亮，实际进度一路延迟</li>
+<li>不同客户要的东西不一样，为了都照顾到，团队只好硬着头皮维护好几个版本</li>
+<li>产品说研发不理解业务，研发说产品需求没想清楚，测试夹在中间背锅</li>
+<li>大家天天很忙，但产品到底有没有往正确方向走，其实谁心里都没底</li>
+</ul>
+<p>这时候团队最容易做的事情，是继续加码：</p>
+<blockquote>
+<p>多开几个会，多写几份文档，多排几张计划表，再催一催进度。</p>
+</blockquote>
+<p>但很多时候问题不在这里。</p>
+<p>真正麻烦的是：</p>
+<blockquote>
+<p><strong>我们太晚接触真实用户，太晚发现方向偏了，太晚知道哪些东西其实没价值。</strong></p>
+</blockquote>
+<p>敏捷要解决的，正是这类问题。</p>
+<hr>
+<h2 id="二敏捷到底想干什么"><a class="anchor" href="#二敏捷到底想干什么" aria-label="跳转到本节">#</a>二、敏捷到底想干什么</h2>
+<p>我更愿意把敏捷理解成一句话：</p>
+<blockquote>
+<p><strong>用更小的步子、更快的反馈、更持续的改进，降低产品研发里的不确定性。</strong></p>
+</blockquote>
+<p>真实世界里，需求不会老老实实按需求文档走，用户也不会完全按我们想象的方式用产品。市场会变，客户会变，团队能力也会变。</p>
+<p>所以敏捷不是假装一开始就能把所有事情想清楚，而是承认：</p>
+<blockquote>
+<p>很多事情只有做出来、拿出去、让真实用户用一用，才知道到底对不对。</p>
+</blockquote>
+<p>因此，敏捷最关心三件事：</p>
+<ol>
+<li><strong>价值</strong>：这个东西到底有没有用？用户愿不愿意用？客户愿不愿意买单？</li>
+<li><strong>反馈</strong>：我们能不能早点知道做对了还是做偏了？</li>
+<li><strong>改进</strong>：发现问题以后，团队能不能真的调整，而不是下次继续踩同一个坑？</li>
+</ol>
+<hr>
+<h2 id="三敏捷宣言本质上是在说怎么取舍"><a class="anchor" href="#三敏捷宣言本质上是在说怎么取舍" aria-label="跳转到本节">#</a>三、敏捷宣言：本质上是在说“怎么取舍”</h2>
+<p>敏捷宣言里有四句话：</p>
+<ul>
+<li><strong>个体和互动 Individuals and Interactions</strong> 高于 流程和工具 Processes and Tools</li>
+<li><strong>可工作的软件 Working Software</strong> 高于 详尽的文档 Comprehensive Documentation</li>
+<li><strong>客户合作 Customer Collaboration</strong> 高于 合同谈判 Contract Negotiation</li>
+<li><strong>响应变化 Responding to Change</strong> 高于 遵循计划 Following a Plan</li>
+</ul>
+<p>这里千万别理解成“流程不重要、文档不重要、计划不重要”。</p>
+<p>它真正想说的是：<span class="signal">这些东西当然重要，但当它们和真实价值冲突时，我们要知道该保谁。</span></p>
+<p>比如：</p>
+<ul>
+<li>文档写得再完整，用户不用，还是白搭</li>
+<li>计划排得再细，市场变了，也得敢改</li>
+<li>工具买得再贵，团队不沟通，照样低效</li>
+<li>合同边界谈得再清楚，如果客户问题没解决，项目也很难算成功</li>
+</ul>
+<p>所以敏捷不是反流程，而是反“流程正确但结果没用”。</p>
+<hr>
+<h2 id="四产品管理才是敏捷的起点"><a class="anchor" href="#四产品管理才是敏捷的起点" aria-label="跳转到本节">#</a>四、产品管理才是敏捷的起点</h2>
+<p>很多团队一说敏捷，第一反应就是 Sprint、站会、看板、Scrum Master。</p>
+<p>这些当然重要，但如果产品方向本身就是糊的，后面流程跑得越顺，可能只是更快地跑偏。</p>
+<p>所以在进入研发节奏之前，产品上至少要先想清楚三个问题。</p>
+<h3 id="1-做什么一句话讲不清基本就还没想清"><a class="anchor" href="#1-做什么一句话讲不清基本就还没想清" aria-label="跳转到本节">#</a>1. 做什么：一句话讲不清，基本就还没想清</h3>
+<p>不要一上来就说：</p>
+<blockquote>
+<p>“我们要做一个智能管理平台。”</p>
+</blockquote>
+<p>这种话听起来很大，但没什么信息量。</p>
+<p>更好的说法应该接近：</p>
+<blockquote>
+<p>“我们要帮连锁酒店前台减少重复接待工作，让客人能自助完成入住。”</p>
+</blockquote>
+<p>一句话定位的价值在于，它能帮团队快速判断：</p>
+<ul>
+<li>我们到底服务谁？</li>
+<li>核心问题是什么？</li>
+<li>产品边界在哪里？</li>
+<li>哪些需求该接，哪些需求该拒？</li>
+</ul>
+<p><span class="signal">定位不是写给老板看的 PPT 金句，而是团队每天做取舍的依据。</span></p>
+<h3 id="2-为谁做别把用户说得太抽象"><a class="anchor" href="#2-为谁做别把用户说得太抽象" aria-label="跳转到本节">#</a>2. 为谁做：别把“用户”说得太抽象</h3>
+<p>“用户需要这个功能”这句话，在产品会上经常出现，但它其实很危险。</p>
+<p>因为“用户”太泛了。</p>
+<p>我们要继续往下问：</p>
+<ul>
+<li>到底是哪类用户？</li>
+<li>他在什么场景下需要？</li>
+<li>这个问题对他有多痛？</li>
+<li>他现在是怎么绕过去的？</li>
+<li>他愿不愿意为了更好的解决方案付出成本？</li>
+</ul>
+<p><span class="signal">用户越具体，产品判断越不容易飘。</span></p>
+<h3 id="3-做到什么程度别一开始就镀金"><a class="anchor" href="#3-做到什么程度别一开始就镀金" aria-label="跳转到本节">#</a>3. 做到什么程度：别一开始就镀金</h3>
+<p>很多产品早期不是死于功能太少，而是死于想做得太全。</p>
+<p>团队会觉得：</p>
+<blockquote>
+<p>这个以后可能有用，那个客户也许会要，这个能力先留个口子……</p>
+</blockquote>
+<p>结果第一个版本迟迟出不来，等终于做完了，才发现核心假设根本没验证。</p>
+<p>所以早期最重要的不是“完整”，而是先验证：</p>
+<blockquote>
+<p><strong>这个方向到底有没有价值？用户到底愿不愿意用？</strong></p>
+</blockquote>
+<p>“做到什么程度”其实是在帮团队划线：</p>
+<ul>
+<li>哪些是必须有的？</li>
+<li>哪些是锦上添花？</li>
+<li>哪些现在做只是自我感动？</li>
+</ul>
+<p><span class="signal">这就是敏捷里反复说“不镀金”的原因。</span></p>
+<hr>
+<h2 id="五从功能思维切到场景思维"><a class="anchor" href="#五从功能思维切到场景思维" aria-label="跳转到本节">#</a>五、从功能思维切到场景思维</h2>
+<p>很多产品讨论容易陷入一个坑：</p>
+<blockquote>
+<p>“要不要加这个功能？”</p>
+</blockquote>
+<p>但更靠谱的问题应该是：</p>
+<blockquote>
+<p>“用户在什么场景下会用它？这个功能能不能解决当时的问题？”</p>
+</blockquote>
+<p>场景不是一句“用户使用时”就完事了。一个真实场景里通常有：</p>
+<ul>
+<li>时间</li>
+<li>地点</li>
+<li>人物</li>
+<li>任务</li>
+<li>情绪</li>
+<li>环境限制</li>
+</ul>
+<p><figure class="illustration"><img src="assets/agile-product-rd/scene-thinking-labeled.png" alt="从功能思维切到场景思维" loading="lazy"><figcaption>从功能思维切到场景思维</figcaption></figure></p>
+<p>比如同样是吃饭：</p>
+<ul>
+<li>早高峰赶地铁，手里拎着电脑包在早餐摊前排队，用户要的是别耽误时间、拿了就能走，最好还能边走边吃</li>
+<li>中午开会开到一半才想起还没吃饭，用户在意的是外卖别迟到、汤别洒、选起来别太费脑子</li>
+<li>晚上和朋友难得聚一顿，用户在意的就不只是吃饱了，还要环境舒服、味道在线、坐下来能好好聊</li>
+</ul>
+<p>都是吃饭，但产品设计完全不是一回事。</p>
+<p>沟通工具也一样。微信和钉钉都能发消息，但微信更偏生活社交，钉钉更偏组织协作。不是功能差异先出现，而是场景差异决定了产品长成不同的样子。</p>
+<p><span class="signal">所以别急着堆功能。先把关键场景想透，很多取舍自然就清楚了。</span></p>
+<hr>
+<h2 id="六mvp不是做一个残缺版而是先验证最关键的事"><a class="anchor" href="#六mvp不是做一个残缺版而是先验证最关键的事" aria-label="跳转到本节">#</a>六、MVP：不是做一个“残缺版”，而是先验证最关键的事</h2>
+<p>MVP（Minimum Viable Product，最小可行产品）经常被误解成“先做个简陋版”。</p>
+<p>这其实不太对。</p>
+<p>MVP 不是粗糙，也不是半成品，而是：</p>
+<blockquote>
+<p><strong>用最小的产品范围，验证最关键的用户价值和业务假设。</strong></p>
+</blockquote>
+<p><figure class="illustration"><img src="assets/agile-product-rd/mvp-vs-not-mvp-labeled.png" alt="MVP 示例" loading="lazy"><figcaption>MVP 示例</figcaption></figure></p>
+<p>这张图很直观。</p>
+<p>上面那种做法，是先做轮子、底盘、车壳，最后才有一辆车。问题是，前面很长时间用户都没法真正使用，团队也拿不到有效反馈。</p>
+<p>下面那种做法，是先给用户一个滑板，再到自行车、摩托车、汽车。每一步都不完美，但每一步都能解决“移动”这个核心问题。</p>
+<p>所以 MVP 的关键不是“少做点”，而是：</p>
+<blockquote>
+<p><strong>不要先做完整产品的一小块，而是先做一个能解决核心问题的最小产品。</strong></p>
+</blockquote>
+<p><span class="signal">这个区别非常重要。</span></p>
+<hr>
+<h2 id="七微信的例子好产品往往是慢慢长出来的"><a class="anchor" href="#七微信的例子好产品往往是慢慢长出来的" aria-label="跳转到本节">#</a>七、微信的例子：好产品往往是慢慢长出来的</h2>
+<p>今天我们看微信，会觉得它什么都有：聊天、朋友圈、公众号、支付、红包、小程序、视频号、企业微信生态……</p>
+<p>但微信一开始并不是一个“超级 App”。</p>
+<p>它早期版本非常克制：</p>
+<ul>
+<li><strong>V1.0</strong>：导入通讯录、发送文字、发送图片、设置头像和昵称</li>
+<li><strong>V1.2</strong>：好友备注、黑名单</li>
+<li><strong>V2.0</strong>：语音消息</li>
+<li><strong>V2.1</strong>：好友验证</li>
+<li><strong>V2.2</strong>：查看附近的人</li>
+<li><strong>V3.0</strong>：扫一扫</li>
+<li><strong>V4.0</strong>：朋友圈</li>
+<li><strong>V4.5</strong>：公众号</li>
+<li><strong>V5.0</strong>：钱包、绑定银行卡</li>
+<li><strong>V6.0</strong>：红包</li>
+</ul>
+<p>它的演进路径大概是这样的：</p>
+<ol>
+<li>先解决熟人之间的即时沟通</li>
+<li>再用语音消息降低输入门槛</li>
+<li>再通过附近的人、扫一扫扩展连接方式</li>
+<li>再通过朋友圈形成社交内容网络</li>
+<li>再通过公众号连接内容和服务</li>
+<li>再通过支付和红包进入交易场景</li>
+</ol>
+<p>这就是很典型的产品演进逻辑：</p>
+<blockquote>
+<p><strong>先把一个核心场景做透，再顺着用户行为和业务机会逐步扩展。</strong></p>
+</blockquote>
+<p>如果微信一开始就想同时做聊天、朋友圈、公众号、支付、小程序，大概率会非常臃肿，也很难快速验证哪个场景真正成立。</p>
+<p>这对我们做产品很有启发：</p>
+<ul>
+<li>早期最怕什么都想做</li>
+<li>版本规划不是功能清单越长越好</li>
+<li>每次迭代都应该让产品更接近用户，而不是更接近我们脑子里的“大而全”</li>
+</ul>
+<hr>
+<h2 id="八scrum把敏捷落到团队日常的一套框架"><a class="anchor" href="#八scrum把敏捷落到团队日常的一套框架" aria-label="跳转到本节">#</a>八、Scrum：把敏捷落到团队日常的一套框架</h2>
+<p>产品方向、核心场景、MVP 想清楚以后，接下来就需要一套协作机制，把想法持续变成交付成果。</p>
+<p>Scrum 就是最常见的一种敏捷框架。</p>
+<blockquote>
+<p>Scrum 不是敏捷的全部，但它确实是很多团队落地敏捷时最容易上手的一套方法。</p>
+</blockquote>
+<p><figure class="illustration"><img src="assets/agile-product-rd/scrum-overview-labeled.png" alt="Scrum 概览" loading="lazy"><figcaption>Scrum 概览</figcaption></figure></p>
+<p>Scrum 主要回答三个问题：</p>
+<ol>
+<li>谁负责什么？</li>
+<li>团队按什么节奏推进？</li>
+<li>怎么判断东西真的完成了？</li>
+</ol>
+<hr>
+<h2 id="九scrum-团队可以想象成一支龙舟队"><a class="anchor" href="#九scrum-团队可以想象成一支龙舟队" aria-label="跳转到本节">#</a>九、Scrum 团队：可以想象成一支龙舟队</h2>
+<p>Scrum 团队（Scrum Team）通常由三个角色组成：</p>
+<ul>
+<li>产品负责人 Product Owner，简称 PO</li>
+<li>Scrum Master，简称 SM</li>
+<li>开发团队 Developers / Development Team</li>
+</ul>
+<p>我觉得龙舟队这个比喻特别形象。</p>
+<p><figure class="illustration"><img src="assets/agile-product-rd/scrum-dragon-boat-labeled.png" alt="Scrum 团队龙舟类比" loading="lazy"><figcaption>Scrum 团队龙舟类比</figcaption></figure></p>
+<h3 id="1-po像掌舵的人决定方向"><a class="anchor" href="#1-po像掌舵的人决定方向" aria-label="跳转到本节">#</a>1. PO：像掌舵的人，决定方向</h3>
+<p>龙舟上掌舵的人，不一定划得最多，但他决定船往哪里走。</p>
+<p>PO 也是一样。</p>
+<p><span class="signal">PO 的核心职责不是“提需求”，而是：</span></p>
+<ul>
+<li>明确产品目标 Product Goal</li>
+<li>判断什么最有价值 Value</li>
+<li>管理产品待办列表 Product Backlog</li>
+<li>排列需求优先级 Priority</li>
+<li>验收团队交付成果 Acceptance</li>
+</ul>
+<p>如果 PO 方向不清，团队越努力，可能跑得越偏。</p>
+<h3 id="2-scrum-master像打鼓的人帮助团队保持节奏"><a class="anchor" href="#2-scrum-master像打鼓的人帮助团队保持节奏" aria-label="跳转到本节">#</a>2. Scrum Master：像打鼓的人，帮助团队保持节奏</h3>
+<p>龙舟里的鼓手不是直接划船的人，但他非常关键。</p>
+<p>他通过鼓点让大家节奏一致，让队伍保持专注和协同。</p>
+<p>Scrum Master 也是类似角色。</p>
+<p>他的职责不是命令团队，而是：</p>
+<ul>
+<li>维护 Scrum 机制有效运行</li>
+<li>帮助团队发现和移除障碍 Impediments</li>
+<li>引导团队持续改进 Continuous Improvement</li>
+<li>保护团队免受不必要干扰</li>
+<li>促进沟通和共识</li>
+</ul>
+<p><span class="signal">好的 Scrum Master 不是“监工”，也不是“催进度专员”，而是教练、引导者和节奏守护者。</span></p>
+<h3 id="3-开发团队像划船的人真正推动船前进"><a class="anchor" href="#3-开发团队像划船的人真正推动船前进" aria-label="跳转到本节">#</a>3. 开发团队：像划船的人，真正推动船前进</h3>
+<p>真正让龙舟向前的，是一起划船的人。</p>
+<p>开发团队也是产品交付的主体。</p>
+<p>一个好的 Scrum 开发团队，通常具备这些特点：</p>
+<ul>
+<li>跨职能 Cross-functional</li>
+<li>自组织 Self-managing</li>
+<li>对结果共同负责 Shared Accountability</li>
+<li>能持续交付产品增量 Product Increment</li>
+<li>愿意不断学习和改善工作方式</li>
+</ul>
+<p>这里有个很重要的点：</p>
+<blockquote>
+<p>团队不是一群“接任务的人”，而是一群共同对结果负责的人。</p>
+</blockquote>
+<hr>
+<h2 id="十scrum-怎么跑起来从需求池到产品增量"><a class="anchor" href="#十scrum-怎么跑起来从需求池到产品增量" aria-label="跳转到本节">#</a>十、Scrum 怎么跑起来：从需求池到产品增量</h2>
+<p>Scrum 的运转，可以理解成一个循环：</p>
+<blockquote>
+<p>先把重要的事情放进需求池，再选出一个迭代要做的事情，集中完成，交付可用结果，然后复盘改进。</p>
+</blockquote>
+<h3 id="1-产品待办列表-product-backlog"><a class="anchor" href="#1-产品待办列表-product-backlog" aria-label="跳转到本节">#</a>1. 产品待办列表 Product Backlog</h3>
+<p>Product Backlog 可以理解成产品的“需求池”。</p>
+<p><span class="signal">但它不是把所有需求一股脑扔进去就完了，而应该是一个动态排序的列表。</span></p>
+<p>一个健康的 Product Backlog 通常具备：</p>
+<ul>
+<li>价值清晰</li>
+<li>优先级明确</li>
+<li>条目粒度合适</li>
+<li>持续更新</li>
+<li>所有人可见，但主要由 PO 维护</li>
+</ul>
+<p>Product Backlog 最核心的问题是：</p>
+<blockquote>
+<p>现在做什么，最能给用户和业务带来价值？</p>
+</blockquote>
+<h3 id="2-产品待办梳理-product-backlog-refinement"><a class="anchor" href="#2-产品待办梳理-product-backlog-refinement" aria-label="跳转到本节">#</a>2. 产品待办梳理 Product Backlog Refinement</h3>
+<p>Product Backlog Refinement，简称 PBR，可以理解为“需求梳理会”或“待办梳理”。</p>
+<p>它的作用，是让需求从模糊变清楚，从大块变小块，从想法变成团队可以执行的工作。</p>
+<p>通常包括：</p>
+<ul>
+<li>拆分大型需求 Epic</li>
+<li>补充用户故事 User Story</li>
+<li>明确验收标准 Acceptance Criteria</li>
+<li>识别依赖关系 Dependencies</li>
+<li>估算工作量 Estimation</li>
+<li>调整优先级 Priority</li>
+</ul>
+<p><span class="signal">如果没有 PBR，Sprint Planning 很容易变成现场吵需求、现场猜工作量，最后大家带着一堆不确定性开干。</span></p>
+<h3 id="3-迭代-冲刺-sprint"><a class="anchor" href="#3-迭代-冲刺-sprint" aria-label="跳转到本节">#</a>3. 迭代 / 冲刺 Sprint</h3>
+<p>Sprint，中文常翻译为“迭代”或“冲刺”，通常持续 2~4 周。</p>
+<p>在一个 Sprint 中，团队围绕一个明确目标，完成一批经过选择和澄清的工作。</p>
+<p>Sprint 的关键是稳定节奏：</p>
+<ul>
+<li>开始前目标清楚</li>
+<li>进行中尽量减少随意插入</li>
+<li>结束时要有可用产出</li>
+</ul>
+<p><span class="signal">它不是说 Sprint 期间绝对不能变，而是不要让团队每天都被新需求打断。否则所谓迭代，就会变成持续救火。</span></p>
+<h3 id="4-迭代待办列表-sprint-backlog"><a class="anchor" href="#4-迭代待办列表-sprint-backlog" aria-label="跳转到本节">#</a>4. 迭代待办列表 Sprint Backlog</h3>
+<p>Sprint Backlog 是当前 Sprint 要完成的工作清单。</p>
+<p>它来自 Product Backlog，但不是 PO 单方面塞给团队的，而是团队基于目标、优先级和自身能力共同确认的。</p>
+<p>Sprint Backlog 关注的问题是：</p>
+<blockquote>
+<p>这一轮我们具体怎么把价值交付出来？</p>
+</blockquote>
+<h3 id="5-每日站会-daily-scrum-daily-stand-up"><a class="anchor" href="#5-每日站会-daily-scrum-daily-stand-up" aria-label="跳转到本节">#</a>5. 每日站会 Daily Scrum / Daily Stand-up</h3>
+<p><span class="signal">每日站会不是给领导汇报工作的会议。</span></p>
+<p>它真正的目标是：</p>
+<ul>
+<li>对齐进展</li>
+<li>暴露障碍</li>
+<li>快速协调</li>
+<li>保持团队节奏</li>
+</ul>
+<p>建议控制在 15 分钟内，并围绕 Sprint 目标展开。否则很容易变成每个人轮流念流水账，听起来很勤奋，实际没什么用。</p>
+<h3 id="6-产品增量-product-increment"><a class="anchor" href="#6-产品增量-product-increment" aria-label="跳转到本节">#</a>6. 产品增量 Product Increment</h3>
+<p>每个 Sprint 结束时，团队都应该产生一个产品增量 Product Increment。</p>
+<p>它不一定马上发布，但必须是“潜在可发布”的 Potentially Shippable。</p>
+<p>也就是说：</p>
+<blockquote>
+<p>它应该是真的可用，而不是“代码写完了，但还不能交付”。</p>
+</blockquote>
+<hr>
+<h2 id="十一用户故事把需求拉回用户语言"><a class="anchor" href="#十一用户故事把需求拉回用户语言" aria-label="跳转到本节">#</a>十一、用户故事：把需求拉回用户语言</h2>
+<p>用户故事 User Story 是敏捷里非常重要的概念。</p>
+<p>它的价值在于：把团队从“功能视角”拉回到“用户视角”。</p>
+<p>常见写法是：</p>
+<blockquote>
+<p>作为某类用户，我希望完成某件事，从而获得某种价值。</p>
+</blockquote>
+<p>例如：</p>
+<blockquote>
+<p>作为点外卖的用户，我希望看到附近可配送的餐厅，从而快速完成下单选择。</p>
+</blockquote>
+<p>这样写的好处是，团队不会只盯着“做一个餐厅列表功能”，而会继续往下想：</p>
+<ul>
+<li>附近怎么定义？</li>
+<li>哪些餐厅当前能配送？</li>
+<li>用户最关心距离、价格、评分还是配送时间？</li>
+<li>用户看到列表后下一步要做什么？</li>
+</ul>
+<p>好的用户故事通常具备这些特点：</p>
+<ul>
+<li>用户能理解</li>
+<li>可以验证</li>
+<li>对应明确场景</li>
+<li>范围尽量小</li>
+<li>可以独立测试</li>
+<li>尽量减少和其他故事的耦合</li>
+</ul>
+<p><span class="signal">用户故事写得好，很多需求歧义会提前暴露；写得不好，团队就只能靠猜。</span></p>
+<hr>
+<h2 id="十二完成的定义-dod别让做完了变成扯皮"><a class="anchor" href="#十二完成的定义-dod别让做完了变成扯皮" aria-label="跳转到本节">#</a>十二、完成的定义 DoD：别让“做完了”变成扯皮</h2>
+<p>Definition of Done，简称 DoD，中文通常叫“完成的定义”。</p>
+<p>它回答的是一个非常现实的问题：</p>
+<blockquote>
+<p>到底什么才叫完成？</p>
+</blockquote>
+<p>在很多团队里，“完成”这个词特别容易产生歧义：</p>
+<ul>
+<li>研发说：我代码写完了</li>
+<li>测试说：我还没测完</li>
+<li>产品说：这和我想的不一样</li>
+<li>运维说：这个还不能上线</li>
+</ul>
+<p>DoD 就是为了统一大家对“完成”的理解。</p>
+<p><figure class="illustration"><img src="assets/agile-product-rd/definition-of-done-labeled.png" alt="DoD 示例" loading="lazy"><figcaption>DoD 示例</figcaption></figure></p>
+<p>一个团队的 DoD 可能包括：</p>
+<ul>
+<li>代码开发完成 Code Complete</li>
+<li>自测完成 Self-tested</li>
+<li>测试通过 QA Passed</li>
+<li>缺陷修复完成 Defects Fixed</li>
+<li>关键文档更新 Documentation Updated</li>
+<li>产品验收通过 Product Accepted</li>
+<li>满足发布要求 Release Ready</li>
+</ul>
+<p><span class="signal">DoD 不是形式主义，它其实是团队的质量底线。</span></p>
+<p>如果一项工作不满足 DoD，就不应该被算作真正完成。否则“做完了”这三个字，迟早会变成团队之间互相扯皮的导火索。</p>
+<hr>
+<h2 id="十三回顾会议-retrospective别让同一个坑反复踩"><a class="anchor" href="#十三回顾会议-retrospective别让同一个坑反复踩" aria-label="跳转到本节">#</a>十三、回顾会议 Retrospective：别让同一个坑反复踩</h2>
+<p>Retrospective，中文通常叫“回顾会议”或“复盘会”。</p>
+<p>它一般发生在每个 Sprint 结束后，目标不是追责，而是改进。</p>
+<p>一次好的回顾，应该讨论：</p>
+<ul>
+<li>这一轮哪些做得好？</li>
+<li>哪些地方让大家很痛苦？</li>
+<li>哪些问题反复出现？</li>
+<li>下个 Sprint 我们具体改哪一两件事？</li>
+</ul>
+<p>这里最重要的是两点。</p>
+<h3 id="1-对事不对人"><a class="anchor" href="#1-对事不对人" aria-label="跳转到本节">#</a>1. 对事不对人</h3>
+<p>如果回顾会变成批斗会，大家以后就不会讲真话。</p>
+<p>团队必须建立心理安全感 Psychological Safety，敢于暴露问题，才有可能真正改进。</p>
+<h3 id="2-行动项要可跟踪"><a class="anchor" href="#2-行动项要可跟踪" aria-label="跳转到本节">#</a>2. 行动项要可跟踪</h3>
+<p>不要只说“以后沟通要更好”。</p>
+<p>这句话太空了。</p>
+<p>更好的行动项是：</p>
+<ul>
+<li>下个 Sprint 每周二、周四固定做一次需求澄清</li>
+<li>所有用户故事进入 Sprint 前必须有验收标准</li>
+<li>遇到阻塞超过半天必须在群里同步</li>
+</ul>
+<p><span class="signal">回顾会议的价值不在于聊了多少，而在于下次是否真的变好了。</span></p>
+<hr>
+<h2 id="十四把产品管理和-scrum-串起来看"><a class="anchor" href="#十四把产品管理和-scrum-串起来看" aria-label="跳转到本节">#</a>十四、把产品管理和 Scrum 串起来看</h2>
+<p>前面讲了产品定位、场景、MVP，也讲了 Scrum 的角色、节奏和术语。</p>
+<p>这些东西不是孤立的。</p>
+<p>可以这样串起来看：</p>
+<p><figure class="illustration"><img src="assets/agile-product-rd/product-scrum-map-labeled.png" alt="产品管理和 Scrum 串联关系" loading="lazy"><figcaption>产品管理和 Scrum 串联关系</figcaption></figure></p>
+<ol>
+<li><strong>产品定位</strong> 决定团队要往哪里走</li>
+<li><strong>场景分析</strong> 帮助团队理解用户为什么需要</li>
+<li><strong>MVP</strong> 帮助团队用最小成本验证核心价值</li>
+<li><strong>产品待办列表 Product Backlog</strong> 把产品想法变成有序需求池</li>
+<li><strong>用户故事 User Story</strong> 把需求翻译成用户能理解的价值</li>
+<li><strong>迭代 Sprint</strong> 让团队用固定节奏持续交付</li>
+<li><strong>完成的定义 DoD</strong> 保证交付质量不打折</li>
+<li><strong>回顾会议 Retrospective</strong> 让团队持续改进</li>
+</ol>
+<p><span class="signal">所以敏捷不是单独的“研发流程”，而是把产品判断、团队协作和持续交付串起来的一套系统。</span></p>
+<hr>
+<h2 id="十五给-po-的一些建议"><a class="anchor" href="#十五给-po-的一些建议" aria-label="跳转到本节">#</a>十五、给 PO 的一些建议</h2>
+<p>如果你是 PO，最重要的不是把需求收集得越多越好，而是做好取舍。</p>
+<p>一些很实用的建议：</p>
+<ul>
+<li>目标一定要讲清楚，不清楚就反复确认</li>
+<li>优先级管理是头等大事，不要把它甩给研发</li>
+<li>风险越早暴露越好，丑话要说在前头</li>
+<li>不要只看用户说了什么，要看用户真正要解决什么</li>
+<li>重要问题尽量准备多个方案，让决策者做选择题</li>
+<li>不要追求第一次就完美，要尽早验证、尽早反馈、持续改进</li>
+<li>越晚接触真实用户，风险越大</li>
+</ul>
+<p>判断需求价值时，可以重点看两个方向：</p>
+<ul>
+<li>用户或客户愿意为它买单的程度</li>
+<li>实现它需要付出的成本、复杂度和机会成本</li>
+</ul>
+<p><span class="signal">说白了，PO 最核心的能力不是“会提需求”，而是知道什么值得做、什么应该先做、什么现在不要做。</span></p>
+<hr>
+<h2 id="十六给-scrum-master-的一些建议"><a class="anchor" href="#十六给-scrum-master-的一些建议" aria-label="跳转到本节">#</a>十六、给 Scrum Master 的一些建议</h2>
+<p>如果你是 Scrum Master，千万不要把自己变成“催进度的人”。</p>
+<p>真正优秀的 Scrum Master，更像是：</p>
+<ul>
+<li>教练 Coach</li>
+<li>引导者 Facilitator</li>
+<li>服务型领导 Servant Leader</li>
+<li>变革推动者 Change Agent</li>
+<li>团队节奏守护者 Rhythm Keeper</li>
+</ul>
+<p><span class="signal">你的目标不是替团队解决所有问题，而是帮助团队形成解决问题的能力。</span></p>
+<p>当你看到团队存在延期风险时，可以先问：</p>
+<ul>
+<li>风险是什么？</li>
+<li>是目标不清，还是工作量低估？</li>
+<li>是需求变更，还是协作阻塞？</li>
+<li>团队是否已经看见这个问题？</li>
+<li>谁最适合推动解决？</li>
+<li>我应该直接介入，还是通过提问引导团队自己解决？</li>
+</ul>
+<p>Scrum Master 的水平，往往体现在：</p>
+<blockquote>
+<p>既不放任问题恶化，也不剥夺团队成长的机会。</p>
+</blockquote>
+<hr>
+<h2 id="十七我最认同的敏捷价值观"><a class="anchor" href="#十七我最认同的敏捷价值观" aria-label="跳转到本节">#</a>十七、我最认同的敏捷价值观</h2>
+<p>敏捷真正能跑起来，靠的不只是流程，更是团队共同认可的一组工作理念：</p>
+<ul>
+<li>信守承诺 Commitment</li>
+<li>持续改进 Continuous Improvement</li>
+<li>目标明确 Clear Goals</li>
+<li>结果共担 Shared Accountability</li>
+<li>平等透明 Transparency</li>
+<li>积极乐观 Positive Attitude</li>
+<li>追求卓越 Excellence</li>
+<li>实事求是 Pragmatism</li>
+</ul>
+<p>这些词看起来有点“虚”，但在真实团队里非常具体。</p>
+<p>比如：</p>
+<ul>
+<li>目标不清，就会反复返工</li>
+<li>不透明，就会互相猜测</li>
+<li>不共担，就会互相甩锅</li>
+<li>不持续改进，问题就会一轮一轮重复</li>
+</ul>
+<hr>
+<h2 id="十八最后总结"><a class="anchor" href="#十八最后总结" aria-label="跳转到本节">#</a>十八、最后总结</h2>
+<p><span class="signal">敏捷不是为了让团队看起来更先进，也不是为了多开几个会。</span></p>
+<p>它真正想帮助团队做到的是：</p>
+<blockquote>
+<p><strong>围绕用户价值，先做最重要的事；用小步快跑降低风险；用真实反馈修正方向；用持续改进让团队越来越强。</strong></p>
+</blockquote>
+<p>如果只记住一句话，我希望是：</p>
+<blockquote>
+<p><strong>敏捷的核心不是快，而是更早知道什么是对的，然后更快把它做好。</strong></p>
+</blockquote>
+
+        <div class="footer-note">围绕用户价值，小步验证，持续改进。</div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

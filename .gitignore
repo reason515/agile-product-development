@@ -1,0 +1,9 @@
+NUL
+extracted_media/
+tmp/*
+!tmp/build-agile-html.mjs
+*.pptx
+assets/agile-product-rd/definition-of-done.png
+assets/agile-product-rd/mvp-vs-not-mvp.png
+assets/agile-product-rd/scrum-dragon-boat.png
+assets/agile-product-rd/scrum-overview.png
