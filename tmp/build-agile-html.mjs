@@ -53,7 +53,36 @@ marked.setOptions({
   breaks: false,
 });
 
-const body = marked.parse(markdown);
+const signalPhrases = [
+  "这些东西当然重要，但当它们和真实价值冲突时，我们要知道该保谁。",
+  "定位不是写给老板看的 PPT 金句，而是团队每天做取舍的依据。",
+  "用户越具体，产品判断越不容易飘。",
+  "这就是敏捷里反复说“不镀金”的原因。",
+  "所以别急着堆功能。先把关键场景想透，很多取舍自然就清楚了。",
+  "这个区别非常重要。",
+  "PO 的核心职责不是“提需求”，而是：",
+  "好的 Scrum Master 不是“监工”，也不是“催进度专员”，而是教练、引导者和节奏守护者。",
+  "但它不是把所有需求一股脑扔进去就完了，而应该是一个动态排序的列表。",
+  "如果没有 PBR，Sprint Planning 很容易变成现场吵需求、现场猜工作量，最后大家带着一堆不确定性开干。",
+  "它不是说 Sprint 期间绝对不能变，而是不要让团队每天都被新需求打断。否则所谓迭代，就会变成持续救火。",
+  "每日站会不是给领导汇报工作的会议。",
+  "用户故事写得好，很多需求歧义会提前暴露；写得不好，团队就只能靠猜。",
+  "DoD 不是形式主义，它其实是团队的质量底线。",
+  "回顾会议的价值不在于聊了多少，而在于下次是否真的变好了。",
+  "所以敏捷不是单独的“研发流程”，而是把产品判断、团队协作和持续交付串起来的一套系统。",
+  "说白了，PO 最核心的能力不是“会提需求”，而是知道什么值得做、什么应该先做、什么现在不要做。",
+  "你的目标不是替团队解决所有问题，而是帮助团队形成解决问题的能力。",
+  "敏捷不是为了让团队看起来更先进，也不是为了多开几个会。",
+];
+
+function applySignalHighlights(html) {
+  return signalPhrases.reduce(
+    (output, phrase) => output.split(phrase).join(`<span class="signal">${phrase}</span>`),
+    html
+  );
+}
+
+const body = applySignalHighlights(marked.parse(markdown));
 const title = headings.find((h) => h.depth === 1)?.text || "敏捷产品研发理念和方法";
 const subtitle = markdown.match(/^>\s*(.+)$/m)?.[1] || "";
 
