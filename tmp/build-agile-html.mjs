@@ -5,6 +5,7 @@ import { marked } from "file:///C:/Users/reaso/.cache/codex-runtimes/codex-prima
 const sourcePath = "敏捷产品研发理念和方法.md";
 const outputPath = "敏捷产品研发理念和方法.html";
 const indexPath = "index.html";
+const authorName = "吕韧";
 
 const markdown = fs.readFileSync(sourcePath, "utf8");
 
@@ -210,6 +211,28 @@ const html = `<!doctype html>
       background: rgba(47, 184, 172, .10);
       font-size: 1.13rem;
       font-weight: 650;
+    }
+
+    .author {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 8px 14px;
+      border: 2px solid rgba(34, 49, 63, .16);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .66);
+      color: var(--muted);
+      font-size: .96rem;
+      font-weight: 700;
+    }
+
+    .author::before {
+      content: "作者";
+      color: var(--ink);
+      font-weight: 900;
     }
 
     .layout {
@@ -436,6 +459,7 @@ const html = `<!doctype html>
       <div class="eyebrow">Agile Product Development</div>
       <h1>${escapeHtml(title)}</h1>
       <blockquote>${escapeHtml(subtitle)}</blockquote>
+      <div class="author">${escapeHtml(authorName)}</div>
     </header>
     <div class="layout">
       <aside class="toc" aria-label="文章目录">

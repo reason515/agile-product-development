@@ -119,6 +119,28 @@
       font-weight: 650;
     }
 
+    .author {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 8px 14px;
+      border: 2px solid rgba(34, 49, 63, .16);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .66);
+      color: var(--muted);
+      font-size: .96rem;
+      font-weight: 700;
+    }
+
+    .author::before {
+      content: "作者";
+      color: var(--ink);
+      font-weight: 900;
+    }
+
     .layout {
       display: grid;
       grid-template-columns: 230px minmax(0, 1fr);
@@ -343,12 +365,13 @@
       <div class="eyebrow">Agile Product Development</div>
       <h1>敏捷产品研发理念和方法</h1>
       <blockquote>敏捷不是为了把研发这件事说得多高级。说到底，它是想帮我们在变化很快的环境里少走弯路，更快做出真正能落地的产品。</blockquote>
+      <div class="author">吕韧</div>
     </header>
     <div class="layout">
       <aside class="toc" aria-label="文章目录">
         <p class="toc-title">目录</p>
         <nav>
-          <a href="#一明明已经很努力了为什么还是打动不了用户">明明已经很努力了，为什么还是打动不了用户</a>
+          <a href="#一明明已经很努力了为什么用户还是不买单">明明已经很努力了，为什么用户还是不买单</a>
 <a href="#二敏捷到底想干什么">敏捷到底想干什么</a>
 <a href="#三敏捷宣言本质上是在说怎么取舍">敏捷宣言：本质上是在说“怎么取舍”</a>
 <a href="#四产品管理才是敏捷的起点">产品管理才是敏捷的起点</a>
@@ -374,12 +397,12 @@
 <p>敏捷不是为了把研发这件事说得多高级。说到底，它是想帮我们在变化很快的环境里少走弯路，更快做出真正能落地的产品。</p>
 </blockquote>
 <hr>
-<h2 id="一明明已经很努力了为什么还是打动不了用户"><a class="anchor" href="#一明明已经很努力了为什么还是打动不了用户" aria-label="跳转到本节">#</a>一、明明已经很努力了，为什么还是打动不了用户</h2>
+<h2 id="一明明已经很努力了为什么用户还是不买单"><a class="anchor" href="#一明明已经很努力了为什么用户还是不买单" aria-label="跳转到本节">#</a>一、明明已经很努力了，为什么用户还是不买单</h2>
 <p>做产品研发的人，大概率都见过这些场面：</p>
 <ul>
 <li>实验室里跑得好好的，一到客户现场就各种掉链子</li>
-<li>产品憋了几个月，终于上线了，结果用户不买单</li>
-<li>计划排得很漂亮，实际进度却一路延迟</li>
+<li>产品憋了一两年，终于交付了，结果发现用不起来</li>
+<li>计划排得很周密，可变化总比计划来得更快</li>
 <li>不同客户要的东西不一样，为了都照顾到，团队只好硬着头皮维护好几个版本</li>
 <li>产品说研发不理解业务，研发说产品需求没想清楚，测试夹在中间背锅</li>
 <li>大家天天都很忙，但产品到底有没有往正确方向走，其实谁心里都没底</li>
